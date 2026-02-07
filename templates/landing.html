@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section style="
+    background: linear-gradient(135deg, #7b2c2c, #a14d4d);
+    color: white;
+    padding: 80px 60px;
+    border-radius: 18px;
+    margin-bottom: 70px;
+">
+    <h1 style="
+        font-size: 42px;
+        margin-top: 0;
+        max-width: 700px;
+        line-height: 1.2;
+    ">
+        Learn Skills That Matter.<br>
+        Build Your Future Today.
+    </h1>
+
+    <p style="
+        font-size: 18px;
+        max-width: 650px;
+        line-height: 1.7;
+        margin: 20px 0 35px;
+        color: #f5eaea;
+    ">
+        A modern learning management system offering expert-designed courses,
+        hands-on lessons, progress tracking, and certificates — all in one platform.
+    </p>
+
+    {% if not user.is_authenticated %}
+        <a href="/register/" class="btn" style="
+            margin-right: 15px;
+            padding: 12px 24px;
+            font-size: 16px;
+        ">
+            Get Started Free
+        </a>
+
+        <a href="/login/" class="btn" style="
+            background: white;
+            color: #7b2c2c;
+            padding: 12px 24px;
+            font-size: 16px;
+        ">
+            Login
+        </a>
+    {% else %}
+        <a href="/courses/" class="btn" style="
+            padding: 12px 24px;
+            font-size: 16px;
+        ">
+            Browse Courses
+        </a>
+    {% endif %}
+</section>
+
+<!-- TRUST / STATS -->
+<section style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 80px;
+    text-align: center;
+">
+    <div class="card">
+        <h2 style="color:#7b2c2c; margin-bottom: 8px;">100+</h2>
+        <p>Quality Courses</p>
+    </div>
+
+    <div class="card">
+        <h2 style="color:#7b2c2c; margin-bottom: 8px;">50+</h2>
+        <p>Expert Instructors</p>
+    </div>
+
+    <div class="card">
+        <h2 style="color:#7b2c2c; margin-bottom: 8px;">10K+</h2>
+        <p>Active Learners</p>
+    </div>
+
+    <div class="card">
+        <h2 style="color:#7b2c2c; margin-bottom: 8px;">100%</h2>
+        <p>Completion Certificates</p>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section style="margin-bottom: 80px;">
+    <h2 style="
+        text-align: center;
+        color: #7b2c2c;
+        margin-bottom: 40px;
+    ">
+        Why Choose Our LMS?
+    </h2>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 30px;
+    ">
+        <div class="card">
+            <h3>📚 Structured Learning</h3>
+            <p>
+                Courses are divided into sections and lessons for a smooth,
+                step-by-step learning experience.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>▶ Continue Learning</h3>
+            <p>
+                Resume exactly where you left off with automatic progress tracking.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🏆 Certificates</h3>
+            <p>
+                Download professional certificates after completing each course.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>💳 Secure Payments</h3>
+            <p>
+                Purchase premium courses securely with simple checkout flow.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>👨‍🏫 Instructor Dashboard</h3>
+            <p>
+                Instructors can manage courses, students, and content easily.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>📈 Admin Control</h3>
+            <p>
+                Full administrative control over courses, users, progress, and data.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED COURSES -->
+<section style="margin-bottom: 90px;">
+    <h2 style="
+        color: #7b2c2c;
+        margin-bottom: 30px;
+    ">
+        Featured Courses
+    </h2>
+
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 30px;
+    ">
+        {% for course in courses %}
+        <div class="card">
+            <h3>{{ course.title }}</h3>
+
+            <p>
+                {{ course.description|truncatechars:100 }}
+            </p>
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 15px;
+            ">
+                <strong>
+                    {% if course.price == 0 %}
+                        Free
+                    {% else %}
+                        ₹{{ course.price }}
+                    {% endif %}
+                </strong>
+
+                <a href="/courses/{{ course.id }}/" class="btn">
+                    View Course
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p>No courses available.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section style="
+    background: #fff;
+    padding: 60px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+">
+    <h2 style="color:#7b2c2c; margin-top: 0;">
+        Start Learning Today
+    </h2>
+
+    <p style="
+        max-width: 600px;
+        margin: 15px auto 35px;
+        color: #555;
+        font-size: 17px;
+    ">
+        Join thousands of learners who are upgrading their skills and careers
+        with our professional learning platform.
+    </p>
+
+    {% if not user.is_authenticated %}
+        <a href="/register/" class="btn" style="
+            padding: 14px 30px;
+            font-size: 16px;
+        ">
+            Create Free Account
+        </a>
+    {% else %}
+        <a href="/courses/" class="btn" style="
+            padding: 14px 30px;
+            font-size: 16px;
+        ">
+            Go to Courses
+        </a>
+    {% endif %}
+</section>
+
+{% endblock %}

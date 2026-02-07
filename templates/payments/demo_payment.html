@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    text-align:center;
+">
+
+    <h2 style="color:#7b2c2c;">
+        Demo Payment
+    </h2>
+
+    <p style="color:#555;">
+        You are enrolling in:
+    </p>
+
+    <h3>{{ course.title }}</h3>
+
+    <p style="font-size:18px; font-weight:600;">
+        Amount: ₹{{ course.price }}
+    </p>
+
+    <p style="color:#777; margin:20px 0;">
+        This is a demo payment screen.  
+        No real transaction will occur.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn" style="padding:12px 26px;">
+            ✅ Confirm Payment
+        </button>
+    </form>
+
+</section>
+
+{% endblock %}

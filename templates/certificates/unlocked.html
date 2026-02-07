@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="
+    max-width:900px;
+    margin:60px auto;
+    background:#fff;
+    padding:60px;
+    border-radius:22px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.12);
+    text-align:center;
+    border-top:8px solid #7b2c2c;
+">
+
+    <h1 style="
+        font-size:38px;
+        margin-bottom:10px;
+        color:#7b2c2c;
+        letter-spacing:1px;
+    ">
+        Certificate of Completion
+    </h1>
+
+    <p style="
+        font-size:16px;
+        color:#777;
+        margin-bottom:40px;
+    ">
+        This is proudly presented to
+    </p>
+
+    <h2 style="
+        font-size:30px;
+        margin:20px 0;
+        font-weight:600;
+    ">
+        {{ request.user.get_full_name|default:request.user.username }}
+    </h2>
+
+    <p style="
+        font-size:16px;
+        color:#555;
+        margin:25px 0;
+    ">
+        for successfully completing the course
+    </p>
+
+    <h3 style="
+        font-size:24px;
+        margin-bottom:40px;
+        color:#333;
+    ">
+        {{ course.title }}
+    </h3>
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-top:60px;
+    ">
+
+        <div style="text-align:left;">
+            <p style="margin:0;font-size:14px;color:#777;">Date</p>
+            <strong>{{ now|date:"F d, Y" }}</strong>
+        </div>
+
+        <div style="text-align:right;">
+            <p style="margin:0;font-size:14px;color:#777;">Authorized By</p>
+            <strong>LMS Platform</strong>
+        </div>
+    </div>
+
+    <hr style="margin:50px 0;">
+
+    <a href="/certificate/download/{{ course.id }}/"
+       class="btn"
+       style="padding:12px 30px;font-size:16px;">
+        ⬇ Download Certificate (PDF)
+    </a>
+
+</section>
+
+{% endblock %}

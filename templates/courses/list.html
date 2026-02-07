@@ -1,0 +1,147 @@
+
+{% extends "base.html" %}
+{% load course_extras %}
+{% block content %}
+
+<!-- HEADER -->
+<section style="margin-bottom: 30px;">
+    <h1 style="color:#7b2c2c;">Courses</h1>
+    <p style="color:#777;">Search, enroll, and continue learning</p>
+</section>
+
+<!-- SEARCH & FILTER FORM -->
+<form method="get" style="
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+">
+
+    <input type="text"
+           name="q"
+           value="{{ query|default:'' }}"
+           placeholder="Search courses"
+           style="
+                padding:10px 14px;
+                border-radius:10px;
+                border:1px solid #ddd;
+                min-width:220px;
+           ">
+
+    <select name="filter"
+            style="
+                padding:10px 14px;
+                border-radius:10px;
+                border:1px solid #ddd;
+           ">
+        <option value="">All</option>
+        <option value="free" {% if filter_type == "free" %}selected{% endif %}>Free</option>
+        <option value="paid" {% if filter_type == "paid" %}selected{% endif %}>Paid</option>
+        {% if user.is_authenticated %}
+        <option value="enrolled" {% if filter_type == "enrolled" %}selected{% endif %}>
+            Enrolled
+        </option>
+        {% endif %}
+    </select>
+
+    <button class="btn" type="submit">Apply</button>
+
+</form>
+
+<!-- COURSES GRID -->
+<section style="
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:28px;
+">
+
+{% for course in courses %}
+<div style="
+    background:#fff;
+    padding:24px;
+    border-radius:18px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.06);
+">
+
+    <!-- TITLE -->
+    <h3 style="color:#7b2c2c; margin-top:0;">
+        {{ course.title }}
+    </h3>
+
+    <!-- DESCRIPTION -->
+    <p style="color:#555;">
+        {{ course.description|truncatechars:90 }}
+    </p>
+
+    <!-- BADGES -->
+    {% if course.id in enrolled_courses %}
+        <span style="
+            display:inline-block;
+            background:#e6f4ea;
+            color:#1e7e34;
+            padding:4px 10px;
+            border-radius:14px;
+            font-size:13px;
+            margin-bottom:8px;
+        ">
+            Enrolled
+        </span>
+    {% endif %}
+
+    <!-- PROGRESS -->
+    {% if course.id in progress_data %}
+    <div style="margin:12px 0;">
+        <div style="
+            background:#eee;
+            height:8px;
+            border-radius:10px;
+            overflow:hidden;
+        ">
+            <div style="
+                width:{{ progress_data|dict_get:course.id }}%;
+                background:#7b2c2c;
+                height:100%;
+            "></div>
+        </div>
+        <small style="color:#777;">
+            {{ progress_data|dict_get:course.id }}% completed
+        </small>
+    </div>
+    {% endif %}
+
+    <!-- FOOTER -->
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-top:14px;
+    ">
+        <strong>
+            {% if course.price == 0 %}
+                Free
+            {% else %}
+                ₹{{ course.price }}
+            {% endif %}
+        </strong>
+
+        {% if course.id in enrolled_courses %}
+            <a href="/courses/continue/{{ course.id }}/"
+   class="btn">
+   ▶ Continue Learning
+</a>
+
+        {% else %}
+            <a href="/courses/{{ course.id }}/" class="btn">
+                View
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+{% empty %}
+<p>No courses found.</p>
+{% endfor %}
+
+</section>
+
+{% endblock %}

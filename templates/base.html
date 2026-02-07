@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS Project</title>
+
+    <style>
+        :root {
+            --primary: #7b2c2c;        /* light maroon */
+            --primary-dark: #5e1f1f;
+            --background: #faf6f6;     /* cream background */
+            --card-bg: #ffffff;
+            --text: #2b2b2b;
+            --muted: #777;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* ---------- NAVBAR ---------- */
+        nav {
+            background: linear-gradient(
+                90deg,
+                var(--primary),
+                var(--primary-dark)
+            );
+            padding: 14px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        nav .links a {
+            color: #fff;
+            margin-left: 18px;
+            text-decoration: none;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        nav .links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        nav .user {
+            color: #f2dede;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+
+        /* ---------- PAGE CONTAINER ---------- */
+        .container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* ---------- BUTTON ---------- */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* ---------- CARD ---------- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px;
+            width: 260px;
+            display: inline-block;
+            margin: 15px;
+            vertical-align: top;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* ---------- VIDEO ---------- */
+        video {
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <a href="/" class="logo">LMS Project</a>
+
+    <div class="links">
+        <a href="/courses/">Courses</a>
+
+        {% if user.is_authenticated %}
+            <span class="user">Hi, {{ user.username }}</span>
+            <a href="/logout/">Logout</a>
+        {% else %}
+            <a href="/login/">Login</a>
+            <a href="/register/">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © {{ now|date:"Y" }} LMS Project · Learn Anytime
+</footer>
+
+</body>
+</html>

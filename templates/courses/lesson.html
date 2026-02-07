@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="color:#7b2c2c;">{{ lesson.title }}</h2>
+
+{% if lesson.video %}
+<video id="lessonVideo"
+       controls
+       style="width:100%;border-radius:16px;">
+    <source src="{{ lesson.video.url }}">
+</video>
+
+{% endif %}
+
+<p style="margin-top:20px;">{{ lesson.content }}</p>
+
+<form method="post" action="/courses/lesson/complete/{{ lesson.id }}/">
+    {% csrf_token %}
+    <button class="btn" style="margin-top:25px;">
+        ✅ Mark as Completed & Continue
+    </button>
+</form>
+<script>
+const video = document.getElementById("lessonVideo");
+
+if (video) {
+    video.addEventListener("ended", function () {
+
+        fetch("/courses/lesson/auto-complete/{{ lesson.id }}/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.completed) {
+
+                // ⏱ small delay for smooth UX
+                setTimeout(() => {
+
+                    if (data.next_lesson) {
+                        // ▶ AUTO OPEN NEXT VIDEO
+                        window.location.href =
+                            "/courses/lesson/" + data.next_lesson + "/";
+                    } else {
+                        // 🎓 COURSE COMPLETED → CERTIFICATE
+                        window.location.href =
+                            "/certificate/{{ course.id }}/";
+                    }
+
+                }, 1200);
+            }
+        });
+
+    });
+}
+</script>
+
+{% endblock %}
